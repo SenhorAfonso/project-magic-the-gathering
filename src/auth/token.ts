@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@/users/schema/user.schema';
+import { User } from '@/infraestructure/schemas/user.schema';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 

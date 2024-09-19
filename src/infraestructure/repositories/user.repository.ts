@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './schema/user.schema';
 import { Model } from 'mongoose';
+import { User, UserDocument } from '../schemas/user.schema';
 
 @Injectable()
 export class UserRepository {
@@ -9,24 +9,24 @@ export class UserRepository {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
-  public async create(user: User): Promise<User> {
+  public async create(user: User): Promise<UserDocument> {
     return this.userModel.create(user);
   }
 
-  public async findAll(): Promise<User[]> {
+  public async findAll(): Promise<UserDocument[]> {
     return this.userModel.find().select(['-password']);
   }
 
-  public async findById(id: string): Promise<User> {
+  public async findById(id: string): Promise<UserDocument> {
     return this.userModel.findById(id).select(['-password']);
   }
 
-  public async findByEmailOrUsername(
-    email: string,
-    name: string,
-  ): Promise<User | null> {
-    return this.userModel
-      .findOne({ $or: [{ email: email }, { username: name }] })
-      .exec();
+
+  async findUserByEmail(email: string) {
+    return this.userModel.findOne({ email });
+  }
+
+  async findUserByUsername(username: string) {
+    return this.userModel.findOne({ username });
   }
 }
