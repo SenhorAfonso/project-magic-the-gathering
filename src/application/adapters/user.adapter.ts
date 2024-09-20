@@ -12,6 +12,7 @@ export default class UserAdapter
     return {
       email: dto.email,
       username: dto.username,
+      role: dto.role,
     } as User;
   }
 
@@ -20,6 +21,7 @@ export default class UserAdapter
       email: dto.email,
       username: dto.username,
       password: dto.password,
+      role: dto.role,
     } as User;
   }
 }
