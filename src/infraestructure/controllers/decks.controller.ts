@@ -1,6 +1,4 @@
 import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
-import { FetchBasicLandsUseCase } from '@/application/usecases/decks/fetch-basic-lands.usecase';
-import { FetchCommanderUseCase } from '@/application/usecases/decks/fetch-commander.usecase';
 import { FindAllDecksUseCase } from '@/application/usecases/decks/find-all-decks.usecase';
 import { BuildDeckUseCase } from '@/application/usecases/decks/build-deck.usecase';
 import { UserRole } from '../enums/user-role.enum';
@@ -14,8 +12,6 @@ import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.
 @Controller('decks')
 export class DecksController {
   constructor(
-    private readonly fetchBasicLands: FetchBasicLandsUseCase,
-    private readonly fetchCommander: FetchCommanderUseCase,
     private readonly findAllDecks: FindAllDecksUseCase,
     private readonly buildDeck: BuildDeckUseCase,
     private readonly fetchCommandersNames: FetchCommandersNameUseCase,
@@ -42,11 +38,10 @@ export class DecksController {
     @Query() query: { commanderName: string },
   ) {
     const { sub } = req.user as { sub: string };
-
     return this.buildDeck.execute(query.commanderName, sub);
   }
 
-  @Get('/users-decks')
+  @Get('/user-decks')
   @Roles(UserRole.PLAYER)
   @UseGuards(AuthGuard, RolesGuard)
   async findUsersDecks(@Req() req: Request) {
