@@ -30,7 +30,7 @@ export class DecksController {
     return this.findAllDecks.execute();
   }
 
-  @Get('/create-deck')
+  @Get('/create-deck') 
   @Roles(UserRole.PLAYER)
   @UseGuards(AuthGuard, RolesGuard)
   async createDeck(
