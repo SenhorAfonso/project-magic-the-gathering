@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { CardSchema } from './card.schame';
-import { Card } from './card.schame';
-
+import { CardSchema } from './card.schema';
+import { Card } from './card.schema';
 
 @Schema()
 export class Deck extends Document {

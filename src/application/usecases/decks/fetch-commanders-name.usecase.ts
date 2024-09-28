@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeckBaseUseCase } from './deck-base.usecase';
 import axios from 'axios';
-import { Card } from '@/infraestructure/schemas/card.schame';
+import { Card } from '@/infraestructure/schemas/card.schema';
 
 @Injectable()
 export class FetchCommandersNameUseCase extends DeckBaseUseCase {

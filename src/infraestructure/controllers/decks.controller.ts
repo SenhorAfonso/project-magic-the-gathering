@@ -63,16 +63,9 @@ export class DecksController {
     }
 
     const deckData = await this.importDeckUseCase.execute(file.buffer);
-    const a = this.validateDeckUseCase.execute(deckData);
-    console.log(a);
+    this.validateDeckUseCase.execute(deckData);
 
-    return deckData;
-
-    // try {
-    //   //chamar a stream read file do service ja validada
-    // } catch (error) {
-    //   throw new Error('Error uploading file');
-    // }
+    return { message: 'Deck validated sucessfully' };
   }
 
   @Get('/user-decks')
