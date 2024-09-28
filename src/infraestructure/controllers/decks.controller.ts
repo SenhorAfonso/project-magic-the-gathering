@@ -42,7 +42,12 @@ export class DecksController {
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
   async findAll() {
-    return this.findAllDecks.execute();
+    return this.findAllDecks.execute({ useCache: true });
+  }
+
+  @Get('/admin/load-test')
+  async findAllLoadTest() {
+    return this.findAllDecks.execute({ useCache: true });
   }
 
   @Get('/create-deck')
