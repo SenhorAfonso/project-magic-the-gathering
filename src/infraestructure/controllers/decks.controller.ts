@@ -1,4 +1,14 @@
-import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FindAllDecksUseCase } from '@/application/usecases/decks/find-all-decks.usecase';
 import { BuildDeckUseCase } from '@/application/usecases/decks/build-deck.usecase';
 import { UserRole } from '../enums/user-role.enum';
@@ -8,6 +18,9 @@ import { RolesGuard } from '../guards/user-roles.guard';
 import { Request } from 'express';
 import { FetchCommandersNameUseCase } from '@/application/usecases/decks/fetch-commanders-name.usecase';
 import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.usecase';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usecase';
+import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
 
 @Controller('decks')
 export class DecksController {
@@ -16,6 +29,8 @@ export class DecksController {
     private readonly buildDeck: BuildDeckUseCase,
     private readonly fetchCommandersNames: FetchCommandersNameUseCase,
     private readonly fetchUsersDecks: FetchUsersDecks,
+    private readonly importDeckUseCase: ImportDeckUseCase,
+    private readonly validateDeckUseCase: ValidateDeckUseCase,
   ) {}
 
   @Get('fetch-commanders')
@@ -44,6 +59,19 @@ export class DecksController {
   ) {
     const { sub } = req.user as { sub: string };
     return this.buildDeck.execute(query.commanderName, sub);
+  }
+
+  @Post('upload-deck')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadDeck(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    const deckData = await this.importDeckUseCase.execute(file.buffer);
+    this.validateDeckUseCase.execute(deckData);
+
+    return { message: 'Deck validated sucessfully' };
   }
 
   @Get('/user-decks')

@@ -11,6 +11,10 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { FetchCommandersNameUseCase } from '@/application/usecases/decks/fetch-commanders-name.usecase';
 import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.usecase';
+import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usecase';
+import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
+import DeckAdapter from '@/application/adapters/deck.adapter';
+import CardAdapter from '@/application/adapters/card.adapter';
 
 @Module({
   imports: [
@@ -24,6 +28,10 @@ import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.
     FetchCommandersNameUseCase,
     FetchUsersDecks,
     BuildDeckUseCase,
+    ImportDeckUseCase,
+    ValidateDeckUseCase,
+    CardAdapter,
+    DeckAdapter,
     DecksRepository,
     JwtService,
     ConfigService,

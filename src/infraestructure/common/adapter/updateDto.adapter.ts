@@ -1,4 +1,3 @@
 export default interface AdapterUpdate<Entity, UpdateDTO> {
-
-    updateToEntity(dto: UpdateDTO): Entity;
+  updateToEntity(dto: UpdateDTO): Entity;
 }
