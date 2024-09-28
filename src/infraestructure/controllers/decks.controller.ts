@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Get,
   Post,
@@ -59,7 +60,7 @@ export class DecksController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadDeck(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
-      throw new Error('No file uploaded');
+      throw new BadRequestException('No file uploaded');
     }
 
     const deckData = await this.importDeckUseCase.execute(file.buffer);

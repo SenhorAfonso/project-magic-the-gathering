@@ -3,7 +3,7 @@ import { DeckBaseUseCase } from './deck-base.usecase';
 import { CardDto } from '@/application/dtos/cards/cards.dto';
 @Injectable()
 export class ValidateDeckUseCase extends DeckBaseUseCase {
-  execute(data: any) {
+  execute(data: any): void {
     const deck = data.cards[1];
     const commander = data.cards[1][0];
 
@@ -49,7 +49,6 @@ export class ValidateDeckUseCase extends DeckBaseUseCase {
     });
 
     if (!isCardColorValid) {
-      console.log('Deck colors must match commander colors');
       throw new BadRequestException('Deck colors must match commander colors');
     }
   }

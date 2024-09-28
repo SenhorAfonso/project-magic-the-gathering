@@ -15,11 +15,9 @@ export class ImportDeckUseCase extends DeckBaseUseCase {
       stream
         .pipe(parser)
         .on('data', (data) => {
-          console.log(data.length);
-
           deck.commander = data[0].name;
 
-          deck.cards.push(data);
+          return deck.cards.push(data);
         })
         .on('end', () => {
           resolve(deck);
