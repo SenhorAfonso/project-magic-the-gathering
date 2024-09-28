@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
 import { FindAllDecksUseCase } from '@/application/usecases/decks/find-all-decks.usecase';
 import { BuildDeckUseCase } from '@/application/usecases/decks/build-deck.usecase';
 import { UserRole } from '../enums/user-role.enum';
@@ -27,10 +27,15 @@ export class DecksController {
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
   async findAll() {
-    return this.findAllDecks.execute();
+    return this.findAllDecks.execute({ useCache: true });
   }
 
-  @Get('/create-deck') 
+  @Get('/admin/load-test')
+  async findAllLoadTest() {
+    return this.findAllDecks.execute({ useCache: true });
+  }
+
+  @Get('/create-deck')
   @Roles(UserRole.PLAYER)
   @UseGuards(AuthGuard, RolesGuard)
   async createDeck(
