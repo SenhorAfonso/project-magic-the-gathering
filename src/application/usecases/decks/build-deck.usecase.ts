@@ -9,7 +9,7 @@ export class BuildDeckUseCase {
   constructor(
     private readonly fetchCommander: FetchCommanderUseCase,
     private readonly fetchBasicLands: FetchBasicLandsUseCase,
-    private readonly decksRespository: DecksRepository,
+    private readonly decksRepository: DecksRepository,
   ) {}
   async execute(commanderName: string, userId: string) {
     const commander = await this.fetchCommander.execute(commanderName);
@@ -25,6 +25,6 @@ export class BuildDeckUseCase {
       userId: userId,
     };
 
-    return await this.decksRespository.create(createDeckDto);
+    return await this.decksRepository.create(createDeckDto);
   }
 }

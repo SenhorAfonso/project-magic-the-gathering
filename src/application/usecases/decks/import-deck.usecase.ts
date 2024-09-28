@@ -7,9 +7,9 @@ import * as JSONStream from 'JSONStream';
 export class ImportDeckUseCase extends DeckBaseUseCase {
   async execute(fileBuffer: Buffer) {
     const stream = Readable.from(fileBuffer.toString('utf-8'));
+    const parser = JSONStream.parse('*');
 
     return new Promise((resolve, reject) => {
-      const parser = JSONStream.parse('*');
       const deck = { commander: null, cards: [] };
 
       stream
