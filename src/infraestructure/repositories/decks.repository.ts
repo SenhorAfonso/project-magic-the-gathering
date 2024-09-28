@@ -1,4 +1,3 @@
-import { CreateDeckDto } from '@/application/dtos/decks/create-deck.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -10,8 +9,8 @@ export class DecksRepository {
     @InjectModel(Deck.name) private readonly deckModel: Model<Deck>,
   ) {}
 
-  async create(createDeckDto: CreateDeckDto): Promise<Deck> {
-    const createdDeck = new this.deckModel(createDeckDto);
+  async create(deck: Deck): Promise<Deck> {
+    const createdDeck = new this.deckModel(deck);
     return await createdDeck.save();
   }
 
