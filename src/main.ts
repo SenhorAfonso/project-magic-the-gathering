@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { cpus } from 'os';
 import cluster from 'cluster';
+import * as compression from 'compression';
+import queue from 'express-queue';
 
 async function bootstrap() {
   let masterPID: number;
@@ -26,6 +28,8 @@ async function bootstrap() {
   } else {
     const app = await NestFactory.create(AppModule);
     app.useGlobalPipes(new ValidationPipe());
+    app.use(queue({ activeLimit: 12, queuedLimit: 50 }));
+    app.use(compression.default({ threshold: 100 }));
     await app.listen(3001);
   }
 }

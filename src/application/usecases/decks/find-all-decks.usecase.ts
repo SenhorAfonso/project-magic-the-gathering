@@ -3,10 +3,11 @@ import { DeckBaseUseCase } from './deck-base.usecase';
 
 @Injectable()
 export class FindAllDecksUseCase extends DeckBaseUseCase {
-  async execute() {
-    const cachedDecks = await this.cacheManager.get('get-all-users-decks');
+  async execute(cache: { useCache: boolean }) {
+    const { useCache } = cache;
 
-    if (cachedDecks) {
+    const cachedDecks = await this.cacheManager.get('get-all-users-decks');
+    if (useCache && cachedDecks) {
       return cachedDecks;
     } else {
       const fetchedDecks = await this.decksRepository.findAll();
