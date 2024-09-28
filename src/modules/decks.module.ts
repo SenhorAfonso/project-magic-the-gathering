@@ -13,6 +13,8 @@ import { FetchCommandersNameUseCase } from '@/application/usecases/decks/fetch-c
 import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.usecase';
 import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usecase';
 import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
+import DeckAdapter from '@/application/adapters/deck.adapter';
+import CardAdapter from '@/application/adapters/card.adapter';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.
     BuildDeckUseCase,
     ImportDeckUseCase,
     ValidateDeckUseCase,
+    CardAdapter,
+    DeckAdapter,
     DecksRepository,
     JwtService,
     ConfigService,

@@ -4,7 +4,7 @@ import { Card } from '@/infraestructure/schemas/card.schema';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export default class cardAdapter implements AdapterCreate<Card, CardDto> {
+export default class CardAdapter implements AdapterCreate<Card, CardDto> {
   public createToEntity(dto: CardDto): Card {
     return {
       name: dto.name,

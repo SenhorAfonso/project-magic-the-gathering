@@ -11,8 +11,8 @@ export class BuildDeckUseCase {
     private readonly fetchCommander: FetchCommanderUseCase,
     private readonly fetchBasicLands: FetchBasicLandsUseCase,
     private readonly decksRepository: DecksRepository,
-    private readonly adapterDeck: DeckAdapter
-  ) { }
+    private readonly adapterDeck: DeckAdapter,
+  ) {}
   async execute(commanderName: string, userId: string) {
     const commander = await this.fetchCommander.execute(commanderName);
     const allowedColors = commander.colorIdentity.join('|');
