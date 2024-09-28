@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DeckBaseUseCase } from './deck-base.usecase';
-import { Card } from '@/infraestructure/schemas/deck.schema';
+import { Card } from '@/infraestructure/schemas/card.schame';
 
 @Injectable()
 export class FetchUsersDecks extends DeckBaseUseCase {

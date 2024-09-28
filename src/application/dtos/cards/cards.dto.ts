@@ -8,6 +8,9 @@ export class CardDto {
   @IsString()
   manaCost: string;
 
+  @IsString()
+  cmc: number;
+
   @IsArray()
   colors: string[];
 
