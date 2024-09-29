@@ -20,7 +20,7 @@ Este README fornece uma descrição detalhada das funcionalidades e requisitos p
 
 7. *🗄️ Armazenamento em banco de dados Redis*
 
-8. *📊 Cachamento de listagem de decks*
+8. *📊 Cacheamento de listagem de decks*
 
 9. *🚀 Melhoria de performance utilizando cluster*
 
@@ -43,8 +43,8 @@ Este README fornece uma descrição detalhada das funcionalidades e requisitos p
 ## 🌐 Rotas da API
 
 #### Auth
-- *POST* /users/register - Registro de novo usuário
-- *POST* /users/login - Autenticação de usuário
+- *POST* /auth/register - Registro de novo usuário
+- *POST* /auth/login - Autenticação de usuário
 
 #### Deck
 - *GET* /decks/create-deck - Criação de novo deck
