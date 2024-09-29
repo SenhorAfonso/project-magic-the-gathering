@@ -1,73 +1,83 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 📖 Bem-vindo(a) à API de magic! 
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este README fornece uma descrição detalhada das funcionalidades e requisitos para a criação e desenvolvimento da nossa aplicação mágica do jogo de estratégia Magic! 🌟⚔️🧙‍♂️
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## ✨ Funcionalidades
 
-## Description
+1. *🧙 Criação de Entidade de Usuário com Autenticação JWT*
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+2. *🔒 Auth Guard*:
+   - Adicione um Auth Guard para as rotas da entidade principal da sua aplicação.
+   - Somente usuários autenticados poderão chamar essas rotas.
 
-## Installation
+3. *📏 Criação de decks*
 
-```bash
-$ npm install
-```
+4. *🎲 Gerenciamento de multiplos baralhos*
 
-## Running the app
+5. *🧠 Listagem de baralhos*
 
-```bash
-# development
-$ npm run start
+6. *📦 Importação de decks via json* 
 
-# watch mode
-$ npm run start:dev
+7. *🗄️ Armazenamento em banco de dados Redis*
 
-# production mode
-$ npm run start:prod
-```
+8. *📊 Cachamento de listagem de decks*
 
-## Test
+9. *🚀 Melhoria de performance utilizando cluster*
 
-```bash
-# unit tests
-$ npm run test
+10. *💡 Utilização de Node.js streams*
 
-# e2e tests
-$ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
-```
+## 🛠️ Dependências
 
-## Support
+- Node.js 20.12.2
+- TypeScript
+- JWT
+- Class-validator
+- JSONStream
+- Compression
+- Mongoose
+- Redis
+- Bcrypt
+- Cache Manager
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 🌐 Rotas da API
 
-## Stay in touch
+#### Auth
+- *POST* /users/register - Registro de novo usuário
+- *POST* /users/login - Autenticação de usuário
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+#### Deck
+- *GET* /decks/create-deck - Criação de novo deck
+- *POST* /decks/upload-deck - Importação e validação de deck via json
+- *GET* /decks/ - Lista todos os decks do banco
+- *GET* /decks/fetch-commander - Busca commander
+- *GET* /decks/user-decks - Lista todos os decks de um usuário
 
-## License
 
-Nest is [MIT licensed](LICENSE).
+## 🏃‍♂️ Como Rodar a Aplicação
+
+- Clone o repositório.
+bash
+git clone <https://github.com/SenhorAfonso/project-magic-the-gathering>
+
+- Configure as variáveis de ambiente necessárias. 
+
+❗ Crie um arquivo .env na raiz do projeto com base no arquivo .env.example. ❗
+
+- Instale as Dependências
+
+npm install
+
+- Inicie a API
+
+npm run start
+
+- Utilize os endpoints da API conforme documentado.
+
+## 🎐 Conheça os desenvolvedores
+
+- 👨‍💻 [Pedro Afonso](https://github.com/SenhorAfonso)
+- 👩‍💻 [Rhayssa Andretto](https://github.com/rhayssaandretto)
+- 👨‍💻 [Vinicius Kenji](https://github.com/TalDoKenji)
+
+
