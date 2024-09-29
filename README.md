@@ -61,16 +61,13 @@ bash
 git clone <https://github.com/SenhorAfonso/project-magic-the-gathering>
 
 - Configure as variáveis de ambiente necessárias. 
-
+```
 ❗ Crie um arquivo .env na raiz do projeto com base no arquivo .env.example. ❗
-
+```
 - Instale as Dependências
-
+```
 npm install
-
-- Inicie a API
-
-npm run start
+```
 
 - Utilize os endpoints da API conforme documentado.
 
