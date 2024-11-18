@@ -19,7 +19,7 @@ async function bootstrap() {
       cluster.fork();
     }
 
-    cluster.on('exit', (worker, code, signal) => {
+    cluster.on('exit', (worker, code) => {
       if (code !== 0) {
         console.log(`Worker ${worker.process.pid} died. Restating....`);
         cluster.fork();

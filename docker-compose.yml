@@ -1,0 +1,61 @@
+version: "3"
+
+services:
+
+  redis:
+    image: redis:7.4.1
+    container_name: redis_container
+    ports:
+      - 6379:6379
+    networks:
+      - "my-bridge"
+    env_file:
+    - ./.env
+    environment:
+      - REDIS_URL=${REDIS_URL}
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb_container
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - "my-bridge"
+    env_file:
+    - ./.env
+    environment:
+      - MONGO_URI=${MONGO_URI}
+
+  nginx-server:
+    build: ./nginx-server
+    container_name: nginx_container
+    ports:
+      - 80:80
+    networks:
+      - "my-bridge"
+    depends_on:
+      - "mtg_api-service"
+
+  mtg_api-service:
+    build:
+      context: ./
+      target: production
+    container_name: mtg_api_container
+    ports:
+      - 3001:3001
+    networks:
+      - "my-bridge"
+    env_file:
+      - ./.env
+    depends_on:
+      - "mongodb"
+      - "redis"
+
+networks:
+  my-bridge:
+    driver: bridge
+
+volumes:
+  mongodb_data:

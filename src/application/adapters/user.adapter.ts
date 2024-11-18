@@ -1,7 +1,7 @@
 import { CreateUserDto } from '@/application/dtos/users/create-user.dto';
 import { UpdateUserDto } from '@/application/dtos/users/update-user.dto';
 import AdapterCreate from '@/infraestructure/common/adapter/createDto.adapter';
-import AdapterUpdate from '@/infraestructure/common/adapter/updateDTO.adapter';
+import AdapterUpdate from '@/infraestructure/common/adapter/updateDto.adapter';
 import { User } from '../../infraestructure/schemas/user.schema';
 import { Injectable } from '@nestjs/common';
 
