@@ -1,7 +1,5 @@
 FROM node:20.18.0-alpine AS build
 
-WORKDIR /build
-
 COPY package.json .
 
 RUN npm install
@@ -13,7 +11,7 @@ WORKDIR /production
 
 COPY . .
 
-COPY --from=build /build .
+COPY --from=build . .
 
 EXPOSE 3000
 

@@ -9,6 +9,10 @@ services:
       - 6379:6379
     networks:
       - "my-bridge"
+    env_file:
+    - ./.env
+    environment:
+      - REDIS_URL=${REDIS_URL}
 
   mongodb:
     image: mongo:6.0
@@ -19,6 +23,10 @@ services:
       - mongodb_data:/data/db
     networks:
       - "my-bridge"
+    env_file:
+    - ./.env
+    environment:
+      - MONGO_URI=${MONGO_URI}
 
   nginx-server:
     build: ./nginx-server
