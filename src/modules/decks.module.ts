@@ -36,5 +36,6 @@ import CardAdapter from '@/application/adapters/card.adapter';
     JwtService,
     ConfigService,
   ],
+  exports: [DecksRepository], // Certifique-se de exportar o DecksRepository
 })
 export class DecksModule {}

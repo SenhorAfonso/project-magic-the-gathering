@@ -1,61 +1,107 @@
-version: "3"
-
 services:
+  # Kafka
+  kafka:
+    image: wurstmeister/kafka:latest
+    restart: "always"
+    ports:
+      - "29092:29092" # Porta interna do Kafka
+      - "9092:9092"   # Kafka External port
+    environment:
+      KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+      KAFKA_ZOOKEEPER_SESSION_TIMEOUT: "6000"
+      KAFKA_RESTART_ATTEMPTS: "10"
+      KAFKA_RESTART_DELAY: "5"
+      ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+    networks:
+      - "my-bridge"
 
+  # Kafdrop
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    restart: "always"
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092"
+    depends_on:
+      - kafka
+    networks:
+      - "my-bridge"
+
+  # Zookeeper (required for Kafka)
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "22181:2181"
+    environment:
+      ZOOKEEPER_ADMINSERVERPORT: "8080"
+    networks:
+      - "my-bridge"
+
+  # Redis
   redis:
     image: redis:7.4.1
     container_name: redis_container
     ports:
-      - 6379:6379
+      - "6379:6379"
     networks:
       - "my-bridge"
     env_file:
-    - ./.env
+      - ./.env
     environment:
       - REDIS_URL=${REDIS_URL}
 
+  # MongoDB
   mongodb:
     image: mongo:6.0
     container_name: mongodb_container
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
       - "my-bridge"
     env_file:
-    - ./.env
+      - ./.env
     environment:
       - MONGO_URI=${MONGO_URI}
 
+  # Nginx
   nginx-server:
     build: ./nginx-server
     container_name: nginx_container
     ports:
-      - 80:80
+      - "80:80"
     networks:
       - "my-bridge"
     depends_on:
-      - "mtg_api-service"
+      - mtg_api-service
 
+  # API Service
   mtg_api-service:
     build:
       context: ./
       target: production
     container_name: mtg_api_container
     ports:
-      - 3001:3001
+      - "3001:3001"
     networks:
       - "my-bridge"
     env_file:
       - ./.env
     depends_on:
-      - "mongodb"
-      - "redis"
+      - mongodb
+      - redis
 
 networks:
   my-bridge:
     driver: bridge
 
 volumes:
-  mongodb_data:
+  mongodb_data: {}
