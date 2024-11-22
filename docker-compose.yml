@@ -5,7 +5,7 @@ services:
     restart: "always"
     ports:
       - "29092:29092" # Porta interna do Kafka
-      - "9092:9092"   # Kafka External port
+      - "9092:9092" # Kafka External port
     environment:
       KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"
       KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
@@ -21,7 +21,6 @@ services:
     networks:
       - "my-bridge"
 
-  # Kafdrop
   kafdrop:
     image: obsidiandynamics/kafdrop:latest
     restart: "always"
@@ -34,7 +33,6 @@ services:
     networks:
       - "my-bridge"
 
-  # Zookeeper (required for Kafka)
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
@@ -44,7 +42,6 @@ services:
     networks:
       - "my-bridge"
 
-  # Redis
   redis:
     image: redis:7.4.1
     container_name: redis_container
@@ -57,7 +54,6 @@ services:
     environment:
       - REDIS_URL=${REDIS_URL}
 
-  # MongoDB
   mongodb:
     image: mongo:6.0
     container_name: mongodb_container
@@ -72,7 +68,6 @@ services:
     environment:
       - MONGO_URI=${MONGO_URI}
 
-  # Nginx
   nginx-server:
     build: ./nginx-server
     container_name: nginx_container
@@ -83,7 +78,6 @@ services:
     depends_on:
       - mtg_api-service
 
-  # API Service
   mtg_api-service:
     build:
       context: ./
