@@ -5,7 +5,7 @@ import { Kafka } from 'kafkajs';
 export class KafkaService {
   private readonly kafka = new Kafka({
     clientId: 'deck-service',
-    brokers: ['localhost:9092'],
+    brokers: ['localhost:29092'], //ou 29092 | 9092 -- testar
   });
 
   private readonly producer = this.kafka.producer();
