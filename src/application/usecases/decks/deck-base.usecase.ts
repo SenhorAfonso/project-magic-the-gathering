@@ -3,12 +3,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { GetUserByIdUseCase } from '../users/get-user-by-id.usecase';
 
 @Injectable()
 export abstract class DeckBaseUseCase {
   constructor(
     protected readonly decksRepository: DecksRepository,
     protected readonly configService: ConfigService,
+    protected readonly getUserById: GetUserByIdUseCase,
     @Inject(CACHE_MANAGER) protected cacheManager: Cache,
   ) {}
 

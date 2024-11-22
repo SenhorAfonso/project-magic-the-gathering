@@ -15,14 +15,18 @@ import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usec
 import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
 import DeckAdapter from '@/application/adapters/deck.adapter';
 import CardAdapter from '@/application/adapters/card.adapter';
+import { UserModule } from './user.module';
+import { FetchUserSingleDeck } from '@/application/usecases/decks/find-user-single-deck.usecase';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Deck.name, schema: DeckSchema }]),
+    UserModule,
   ],
   controllers: [DecksController],
   providers: [
     FetchBasicLandsUseCase,
+    FetchUserSingleDeck,
     FetchCommanderUseCase,
     FindAllDecksUseCase,
     FetchCommandersNameUseCase,

@@ -13,6 +13,9 @@ export class Deck extends Document {
 
   @Prop({ required: true })
   userId: string;
+
+  @Prop({ required: true })
+  deckOwner: string;
 }
 
 export const DeckSchema = SchemaFactory.createForClass(Deck);

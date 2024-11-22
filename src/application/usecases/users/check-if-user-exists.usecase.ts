@@ -16,3 +16,5 @@ export class CheckIfUserExistsUseCase extends UserBaseUseCase {
     return user;
   }
 }
+
+// TODO: login só funciona se passar username

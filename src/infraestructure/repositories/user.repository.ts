@@ -28,4 +28,8 @@ export class UserRepository {
   async findUserByUsername(username: string) {
     return this.userModel.findOne({ username });
   }
+
+  async findUserById(userId: string) {
+    return this.userModel.findById(userId);
+  }
 }

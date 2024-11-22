@@ -12,7 +12,9 @@ export class FindAllDecksUseCase extends DeckBaseUseCase {
     } else {
       const fetchedDecks = await this.decksRepository.findAll();
       await this.cacheManager.set('get-all-users-decks', fetchedDecks);
-      return fetchedDecks;
+      return {
+        decks: fetchedDecks,
+      };
     }
   }
 }

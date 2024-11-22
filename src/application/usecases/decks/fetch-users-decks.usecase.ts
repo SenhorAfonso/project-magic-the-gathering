@@ -15,10 +15,12 @@ export class FetchUsersDecks extends DeckBaseUseCase {
       };
     } else {
       const fetchedUserDecks = await this.decksRepository.findUsersDecks(sub);
+      const { username } = await this.getUserById.execute(sub);
       await this.cacheManager.set('get-user-decks', fetchedUserDecks);
       return {
         decks: fetchedUserDecks,
         items: fetchedUserDecks.length,
+        deckOwner: username,
       };
     }
   }

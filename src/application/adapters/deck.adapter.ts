@@ -10,6 +10,7 @@ export default class DeckAdapter implements AdapterCreate<Deck, CreateDeckDto> {
       commander: dto.commander,
       cards: dto.cards,
       userId: dto.userId,
+      deckOwner: dto.deckOwner,
     } as Deck;
   }
 }

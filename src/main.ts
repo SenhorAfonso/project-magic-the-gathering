@@ -9,28 +9,35 @@ import queue from 'express-queue';
 async function bootstrap() {
   let masterPID: number;
 
-  if (cluster.isPrimary) {
-    const numCPUs = cpus().length;
+  // if (cluster.isPrimary) {
+  //   const numCPUs = cpus().length;
 
-    masterPID = process.pid;
-    console.log(`primary process started with PID: ${masterPID}`);
-    console.log(`Forking ${numCPUs} workers...`);
-    for (let i = 0; i < numCPUs; i++) {
-      cluster.fork();
-    }
+  //   masterPID = process.pid;
+  //   console.log(`primary process started with PID: ${masterPID}`);
+  //   console.log(`Forking ${numCPUs} workers...`);
+  //   for (let i = 0; i < numCPUs; i++) {
+  //     cluster.fork();
+  //   }
 
-    cluster.on('exit', (worker, code) => {
-      if (code !== 0) {
-        console.log(`Worker ${worker.process.pid} died. Restating....`);
-        cluster.fork();
-      }
-    });
-  } else {
-    const app = await NestFactory.create(AppModule);
-    app.useGlobalPipes(new ValidationPipe());
-    app.use(queue({ activeLimit: 12, queuedLimit: 50 }));
-    app.use(compression.default({ threshold: 100 }));
-    await app.listen(3001);
-  }
+  //   cluster.on('exit', (worker, code) => {
+  //     if (code !== 0) {
+  //       console.log(`Worker ${worker.process.pid} died. Restating....`);
+  //       cluster.fork();
+  //     }
+  //   });
+  // } else {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe());
+  app.use(queue({ activeLimit: 12, queuedLimit: 50 }));
+  app.use(compression.default({ threshold: 100 }));
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
+  await app.listen(3001);
+  // }
 }
+
 bootstrap();
