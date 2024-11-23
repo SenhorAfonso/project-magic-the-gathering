@@ -21,6 +21,7 @@ import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usecase';
 import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
+import { TestUseCase } from '@/application/usecases/decks/test.usecase';
 
 @Controller('decks')
 export class DecksController {
@@ -31,6 +32,7 @@ export class DecksController {
     private readonly fetchUsersDecks: FetchUsersDecks,
     private readonly importDeckUseCase: ImportDeckUseCase,
     private readonly validateDeckUseCase: ValidateDeckUseCase,
+    private readonly testUseCase: TestUseCase,
   ) {}
 
   @Get('fetch-commanders')
@@ -80,5 +82,10 @@ export class DecksController {
   async findUsersDecks(@Req() req: Request) {
     const { sub } = req.user as { sub: string };
     return this.fetchUsersDecks.execute(sub);
+  }
+
+  @Get('test')
+  async test() {
+    return this.testUseCase.execute();
   }
 }
