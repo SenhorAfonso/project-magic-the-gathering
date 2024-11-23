@@ -21,7 +21,6 @@ import { FetchCommandersNameUseCase } from '@/application/usecases/decks/fetch-c
 import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.usecase';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usecase';
-import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
 import { TestUseCase } from '@/application/usecases/decks/test.usecase';
 import { FetchUserSingleDeck } from '@/application/usecases/decks/find-user-single-deck.usecase';
 
@@ -34,9 +33,8 @@ export class DecksController {
     private readonly fetchUsersDecks: FetchUsersDecks,
     private readonly importDeckUseCase: ImportDeckUseCase,
     private readonly fetchUserSingleDeck: FetchUserSingleDeck,
-    private readonly validateDeckUseCase: ValidateDeckUseCase,
     private readonly testUseCase: TestUseCase,
-  ) { }
+  ) {}
 
   @Get('fetch-commanders')
   async getCommander() {
@@ -73,8 +71,7 @@ export class DecksController {
       throw new BadRequestException('No file uploaded');
     }
 
-    const deckData = await this.importDeckUseCase.execute(file.buffer);
-    this.validateDeckUseCase.execute(deckData);
+    await this.importDeckUseCase.execute(file.buffer);
 
     return { message: 'Deck validated sucessfully' };
   }
