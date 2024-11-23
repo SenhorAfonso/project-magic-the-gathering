@@ -1,43 +1,80 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { cpus } from 'os';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import cluster from 'cluster';
 import * as compression from 'compression';
 import queue from 'express-queue';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
-async function bootstrap() {
-  let masterPID: number;
+type BoostrapConfiguration = {
+  useClusters: boolean;
+  max_clusters: number;
+};
 
-  // if (cluster.isPrimary) {
-  //   const numCPUs = cpus().length;
+class bootstrap {
+  private readonly configuration: BoostrapConfiguration;
+  constructor(configuration: BoostrapConfiguration) {
+    this.configuration = configuration;
 
-  //   masterPID = process.pid;
-  //   console.log(`primary process started with PID: ${masterPID}`);
-  //   console.log(`Forking ${numCPUs} workers...`);
-  //   for (let i = 0; i < numCPUs; i++) {
-  //     cluster.fork();
-  //   }
+    const { useClusters: useCluster } = this.configuration;
 
-  //   cluster.on('exit', (worker, code) => {
-  //     if (code !== 0) {
-  //       console.log(`Worker ${worker.process.pid} died. Restating....`);
-  //       cluster.fork();
-  //     }
-  //   });
-  // } else {
-  const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
-  app.use(queue({ activeLimit: 12, queuedLimit: 50 }));
-  app.use(compression.default({ threshold: 100 }));
-  app.enableCors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  });
-  await app.listen(3001);
-  // }
+    if (useCluster) {
+      this.cluster();
+      return;
+    }
+    this.createApp();
+  }
+
+  async createApp() {
+    const app = await NestFactory.create(AppModule);
+
+    await this.setPipes(app);
+    await this.setMiddlewares(app);
+    await this.createMicroservice(app);
+
+    await app.startAllMicroservices();
+    await app.listen(3001);
+  }
+
+  async createMicroservice(app: INestApplication) {
+    app.connectMicroservice<MicroserviceOptions>({
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          brokers: ['localhost:9092'],
+        },
+        consumer: {
+          groupId: 'decks',
+        },
+      },
+    });
+  }
+
+  async setPipes(app: INestApplication) {
+    app.useGlobalPipes(new ValidationPipe());
+  }
+
+  async setMiddlewares(app: INestApplication) {
+    app.use(queue({ activeLimit: 12, queuedLimit: 50 }));
+    app.use(compression.default({ threshold: 100 }));
+  }
+
+  async cluster() {
+    if (cluster.isPrimary) {
+      console.log(`Master cluster setting up ${this.configuration.max_clusters} workers...`);
+      for (let i = 0; i < this.configuration.max_clusters; i++) {
+        cluster.fork();
+      }
+      cluster.on('exit', (worker, code, signal) => {
+        console.log(`worker ${worker.process.pid} died`);
+        cluster.fork();
+      });
+    } else {
+      await this.createApp();
+    }
+  }
 }
-
-bootstrap();
+new bootstrap({
+  useClusters: false,
+  max_clusters: 4,
+});

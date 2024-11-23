@@ -22,6 +22,7 @@ import { FetchUsersDecks } from '@/application/usecases/decks/fetch-users-decks.
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usecase';
 import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
+import { TestUseCase } from '@/application/usecases/decks/test.usecase';
 import { FetchUserSingleDeck } from '@/application/usecases/decks/find-user-single-deck.usecase';
 
 @Controller('decks')
@@ -34,6 +35,7 @@ export class DecksController {
     private readonly importDeckUseCase: ImportDeckUseCase,
     private readonly fetchUserSingleDeck: FetchUserSingleDeck,
     private readonly validateDeckUseCase: ValidateDeckUseCase,
+    private readonly testUseCase: TestUseCase,
   ) { }
 
   @Get('fetch-commanders')
@@ -90,5 +92,10 @@ export class DecksController {
   @UseGuards(AuthGuard)
   async findUserSingleDeck(@Param() params: { deckId: string }) {
     return this.fetchUserSingleDeck.execute(params.deckId);
+  }
+
+  @Get('test')
+  async test() {
+    return this.testUseCase.execute();
   }
 }
