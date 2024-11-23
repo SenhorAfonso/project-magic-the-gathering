@@ -18,10 +18,13 @@ import CardAdapter from '@/application/adapters/card.adapter';
 import { KafkaProduceMessageUseCase } from '@/application/usecases/kafka/kafka-producer.usecase';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TestUseCase } from '@/application/usecases/decks/test.usecase';
+import { UserModule } from './user.module';
+import { FetchUserSingleDeck } from '@/application/usecases/decks/find-user-single-deck.usecase';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Deck.name, schema: DeckSchema }]),
+    UserModule,
     ClientsModule.register([
       {
         name: 'KAFKA_CLIENT',
@@ -37,6 +40,7 @@ import { TestUseCase } from '@/application/usecases/decks/test.usecase';
   controllers: [DecksController],
   providers: [
     FetchBasicLandsUseCase,
+    FetchUserSingleDeck,
     FetchCommanderUseCase,
     FindAllDecksUseCase,
     FetchCommandersNameUseCase,

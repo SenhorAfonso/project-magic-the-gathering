@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   Req,
@@ -22,6 +23,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usecase';
 import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
 import { TestUseCase } from '@/application/usecases/decks/test.usecase';
+import { FetchUserSingleDeck } from '@/application/usecases/decks/find-user-single-deck.usecase';
 
 @Controller('decks')
 export class DecksController {
@@ -31,9 +33,10 @@ export class DecksController {
     private readonly fetchCommandersNames: FetchCommandersNameUseCase,
     private readonly fetchUsersDecks: FetchUsersDecks,
     private readonly importDeckUseCase: ImportDeckUseCase,
+    private readonly fetchUserSingleDeck: FetchUserSingleDeck,
     private readonly validateDeckUseCase: ValidateDeckUseCase,
     private readonly testUseCase: TestUseCase,
-  ) {}
+  ) { }
 
   @Get('fetch-commanders')
   async getCommander() {
@@ -53,7 +56,7 @@ export class DecksController {
   }
 
   @Get('/create-deck')
-  @Roles(UserRole.PLAYER)
+  // @Roles(UserRole.PLAYER)
   @UseGuards(AuthGuard, RolesGuard)
   async createDeck(
     @Req() req: Request,
@@ -78,10 +81,17 @@ export class DecksController {
 
   @Get('/user-decks')
   @Roles(UserRole.PLAYER)
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard)
   async findUsersDecks(@Req() req: Request) {
     const { sub } = req.user as { sub: string };
-    return this.fetchUsersDecks.execute(sub);
+    return await this.fetchUsersDecks.execute(sub);
+  }
+
+  @Get('/user-decks/:deckId')
+  @Roles(UserRole.PLAYER)
+  @UseGuards(AuthGuard)
+  async findUserSingleDeck(@Param() params: { deckId: string }) {
+    return this.fetchUserSingleDeck.execute(params.deckId);
   }
 
   @Get('test')

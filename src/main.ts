@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { cpus } from 'os';
 import cluster from 'cluster';
 import * as compression from 'compression';
 import queue from 'express-queue';

@@ -21,4 +21,8 @@ export class DecksRepository {
   async findUsersDecks(sub): Promise<Deck[]> {
     return await this.deckModel.find({ userId: sub });
   }
+
+  async findDeckById(deckId: string): Promise<Deck> {
+    return await this.deckModel.findById({ _id: deckId });
+  }
 }
