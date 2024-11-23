@@ -15,10 +15,24 @@ import { ImportDeckUseCase } from '@/application/usecases/decks/import-deck.usec
 import { ValidateDeckUseCase } from '@/application/usecases/decks/validate-deck.usecase';
 import DeckAdapter from '@/application/adapters/deck.adapter';
 import CardAdapter from '@/application/adapters/card.adapter';
+import { KafkaProduceMessageUseCase } from '@/application/usecases/kafka/kafka-producer.usecase';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { TestUseCase } from '@/application/usecases/decks/test.usecase';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Deck.name, schema: DeckSchema }]),
+    ClientsModule.register([
+      {
+        name: 'KAFKA_CLIENT',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: ['localhost:9092'],
+          },
+        },
+      },
+    ]),
   ],
   controllers: [DecksController],
   providers: [
@@ -35,6 +49,9 @@ import CardAdapter from '@/application/adapters/card.adapter';
     DecksRepository,
     JwtService,
     ConfigService,
+    KafkaProduceMessageUseCase,
+    TestUseCase,
   ],
+  exports: [DecksRepository],
 })
 export class DecksModule {}
