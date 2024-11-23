@@ -61,7 +61,9 @@ class bootstrap {
 
   async cluster() {
     if (cluster.isPrimary) {
-      console.log(`Master cluster setting up ${this.configuration.max_clusters} workers...`);
+      console.log(
+        `Master cluster setting up ${this.configuration.max_clusters} workers...`,
+      );
       for (let i = 0; i < this.configuration.max_clusters; i++) {
         cluster.fork();
       }

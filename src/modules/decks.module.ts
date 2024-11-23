@@ -20,6 +20,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TestUseCase } from '@/application/usecases/decks/test.usecase';
 import { UserModule } from './user.module';
 import { FetchUserSingleDeck } from '@/application/usecases/decks/find-user-single-deck.usecase';
+import { KafkaController } from '@/infraestructure/controllers/kafka.controller';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { FetchUserSingleDeck } from '@/application/usecases/decks/find-user-sing
       },
     ]),
   ],
-  controllers: [DecksController],
+  controllers: [DecksController, KafkaController],
   providers: [
     FetchBasicLandsUseCase,
     FetchUserSingleDeck,

@@ -16,7 +16,7 @@ export class BuildDeckUseCase {
     private readonly adapterDeck: DeckAdapter,
   ) {}
   async execute(commanderName: string, userId: string) {
-    const commander = await this.fetchCommander.execute(commanderName); 
+    const commander = await this.fetchCommander.execute(commanderName);
     const allowedColors = commander.colorIdentity.join('|');
     const basicLands = await this.fetchBasicLands.execute(allowedColors);
     const deckCards = [commander, ...basicLands];

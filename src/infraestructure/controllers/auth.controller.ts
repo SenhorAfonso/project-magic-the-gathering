@@ -19,7 +19,6 @@ export class AuthController {
 
   @Post('/login')
   async userLogin(@Body() loginUserDto: LoginUserDto) {
-    console.log(loginUserDto)
     const token = await this.loginUserUseCase.execute(loginUserDto);
     return token;
   }
