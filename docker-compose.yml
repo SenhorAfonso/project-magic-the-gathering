@@ -35,55 +35,55 @@ services:
     environment:
       ZOOKEEPER_ADMINSERVERPORT: "8080"
 
-  # redis:
-  #   image: redis:7.4.1
-  #   container_name: redis_container
-  #   ports:
-  #     - "6379:6379"
-  #   volumes:
-  #     - ./redis.conf:/usr/local/etc/redis/redis.conf
-  #   command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - REDIS_URL=${REDIS_URL}
+  redis:
+    image: redis:7.4.1
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=${REDIS_URL}
 
-  # mongodb:
-  #   image: mongo:6.0
-  #   container_name: mongodb_container
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongodb_data:/data/db
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb_container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
 
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - MONGO_URI=${MONGO_URI}
+    env_file:
+      - .env
+    environment:
+      - MONGO_URI=${MONGO_URI}
 
-  # nginx-server:
-  #   build: ./nginx-server
-  #   container_name: nginx_container
-  #   ports:
-  #     - "80:80"
+  nginx-server:
+    build: ./nginx-server
+    container_name: nginx_container
+    ports:
+      - "80:80"
 
-  #   depends_on:
-  #     - mtg_api-service
+    depends_on:
+      - mtg_api-service
 
-  # mtg_api-service:
-  #   build:
-  #     context: ./
-  #     target: production
-  #   container_name: mtg_api_container
-  #   ports:
-  #     - "3001:3001"
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - mongodb
-  #     - redis
-  #   extra_hosts:
-  #     - "redis:120.0.0.1"
+  mtg_api-service:
+    build:
+      context: ./
+      target: production
+    container_name: mtg_api_container
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    extra_hosts:
+      - "redis:120.0.0.1"
 
 volumes:
   mongodb_data: {}
