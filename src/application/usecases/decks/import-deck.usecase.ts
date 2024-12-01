@@ -1,10 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DeckBaseUseCase } from './deck-base.usecase';
 import { Readable } from 'stream';
 import * as JSONStream from 'JSONStream';
+import { WsCreateDeckUseCase } from '../websocket/ws-create-deck.usecase';
+import { WsUpdateDeckUseCase } from '../websocket/ws-update-deck.usecase';
+import { ConfigService } from '@nestjs/config';
+import { KafkaProduceMessageUseCase } from '@/application/usecases/kafka/kafka-producer.usecase';
+import { GetUserByIdUseCase } from '../users/get-user-by-id.usecase';
+import { DecksRepository } from '@/infraestructure/repositories/decks.repository';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ImportDeckUseCase extends DeckBaseUseCase {
+  constructor(
+    private readonly websocketUpdate: WsUpdateDeckUseCase,
+    private readonly websocketCreate: WsCreateDeckUseCase,
+    @Inject(DecksRepository) decksRepository: DecksRepository,
+    @Inject(ConfigService) configService: ConfigService,
+    @Inject(KafkaProduceMessageUseCase) kafkaP: KafkaProduceMessageUseCase,
+    @Inject(GetUserByIdUseCase) getUserById: GetUserByIdUseCase,
+    @Inject(CACHE_MANAGER) cacheManager: Cache,
+  ) {
+    super(decksRepository, configService, kafkaP, getUserById, cacheManager);
+  }
   async execute(fileBuffer: Buffer) {
     const deck = await this.processDeckFile(fileBuffer);
 
@@ -27,8 +46,20 @@ export class ImportDeckUseCase extends DeckBaseUseCase {
 
           return deck.cards.push(data);
         })
-        .on('end', () => {
-          resolve(deck);
+        .on('end', async () => {
+          try {
+            const existingDeck = await this.decksRepository.findByCommander(
+              deck.commander,
+            );
+            if (existingDeck) {
+              this.websocketCreate.execute(deck);
+            } else {
+              this.websocketUpdate.execute(deck);
+            }
+            resolve(deck);
+          } catch (error) {
+            reject(error);
+          }
         })
         .on('error', (error) => {
           reject(error);
