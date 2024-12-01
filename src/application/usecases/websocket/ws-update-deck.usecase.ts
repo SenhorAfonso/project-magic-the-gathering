@@ -1,7 +1,7 @@
-import { WsGateway } from './ws-gateway.usecase';
+import { WsBaseUseCase } from './ws-base.usecase';
 
-export class WsUpdateDeck extends WsGateway {
-  sendUpdateToClient(update: any) {
+export class WsUpdateDeckUseCase extends WsBaseUseCase {
+  execute(update: any) {
     this.server.emit('update', update);
   }
 }

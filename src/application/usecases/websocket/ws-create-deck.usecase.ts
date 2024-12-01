@@ -1,7 +1,7 @@
-import { WsGateway } from './ws-gateway.usecase';
+import { WsBaseUseCase } from './ws-base.usecase';
 
-export class WsCreateDeck extends WsGateway {
-  sendCreateToClient(create: any) {
+export class WsCreateDeckUseCase extends WsBaseUseCase {
+  execute(create: any) {
     this.server.emit('create', create);
   }
 }

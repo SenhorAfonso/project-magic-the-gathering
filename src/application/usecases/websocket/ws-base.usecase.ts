@@ -2,7 +2,7 @@ import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
 @WebSocketGateway(3001, { namespace: 'events' })
-export class WsGateway {
+export abstract class WsBaseUseCase {
   @WebSocketServer()
   server: Server;
 
@@ -13,4 +13,6 @@ export class WsGateway {
   handleDisconnect() {
     console.log('cliente disconectado');
   }
+
+  abstract execute(...args: any): any;
 }
