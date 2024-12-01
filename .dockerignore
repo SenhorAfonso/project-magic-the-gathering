@@ -1,0 +1,7 @@
+nginx-server/
+node_modules/
+test/
+.env.example
+.gitignore
+Dockerfile
+README.md

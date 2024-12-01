@@ -15,4 +15,8 @@ export class CreateDeckDto {
   @IsString()
   @IsNotEmpty()
   userId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  deckOwner: string;
 }

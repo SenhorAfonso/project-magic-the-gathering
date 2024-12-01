@@ -2,6 +2,7 @@ import UserAdapter from '@/application/adapters/user.adapter';
 import { CheckIfUserExistsUseCase } from '@/application/usecases/users/check-if-user-exists.usecase';
 import { CreateUserUseCase } from '@/application/usecases/users/create-user.usecase';
 import { GetUserByEmailUseCase } from '@/application/usecases/users/get-user-by-email.usecase';
+import { GetUserByIdUseCase } from '@/application/usecases/users/get-user-by-id.usecase';
 import { GetUserByUsernameUseCase } from '@/application/usecases/users/get-user-by-name.usecase';
 import { UserController } from '@/infraestructure/controllers/user.controller';
 import { UserRepository } from '@/infraestructure/repositories/user.repository';
@@ -17,6 +18,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     CreateUserUseCase,
     GetUserByEmailUseCase,
     GetUserByUsernameUseCase,
+    GetUserByIdUseCase,
     UserRepository,
     UserAdapter,
   ],
@@ -25,6 +27,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     GetUserByUsernameUseCase,
     CheckIfUserExistsUseCase,
     CreateUserUseCase,
+    GetUserByIdUseCase,
   ],
 })
 export class UserModule {}

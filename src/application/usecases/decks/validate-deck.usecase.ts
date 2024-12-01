@@ -3,7 +3,7 @@ import { DeckBaseUseCase } from './deck-base.usecase';
 import { CardDto } from '@/application/dtos/cards/cards.dto';
 @Injectable()
 export class ValidateDeckUseCase extends DeckBaseUseCase {
-  execute(data: any): void {
+  execute(data: any): { isValid: boolean } {
     const deck = data.cards[1];
     const commander = data.cards[1][0];
 
@@ -11,6 +11,8 @@ export class ValidateDeckUseCase extends DeckBaseUseCase {
     this.validateCommander(commander);
     this.validateBasicLands(deck);
     this.validateColors(deck, commander);
+
+    return { isValid: true };
   }
 
   private validadeDeckSize(deck: CardDto[]) {
