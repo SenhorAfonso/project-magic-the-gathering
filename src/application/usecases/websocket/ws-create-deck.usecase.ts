@@ -3,7 +3,8 @@ import { WsBaseUseCase } from './ws-base.usecase';
 
 @Injectable()
 export class WsCreateDeckUseCase extends WsBaseUseCase {
-  execute(create: any) {
-    this.server.emit('create-deck', create);
+  execute(createDeck: any) {
+    console.log('criando deck: ', createDeck);
+    this.server.emit('create-deck', createDeck);
   }
 }
