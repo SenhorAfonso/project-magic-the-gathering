@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import type { RedisClientOptions } from 'redis';
 import { redisStore } from 'cache-manager-redis-yet';
+import { WebSocketModule } from './modules/websocket.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { redisStore } from 'cache-manager-redis-yet';
     AuthModule,
     UserModule,
     DecksModule,
+    WebSocketModule,
   ],
 })
 export class AppModule {}

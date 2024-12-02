@@ -25,4 +25,8 @@ export class DecksRepository {
   async findDeckById(deckId: string): Promise<Deck> {
     return await this.deckModel.findById({ _id: deckId });
   }
+
+  async findByCommander(sub): Promise<Deck[]> {
+    return await this.deckModel.find({ commander: sub });
+  }
 }
